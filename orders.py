@@ -3,6 +3,8 @@ from datetime import datetime
 from pathlib import Path
 import os
 from stream import cm_futures_client
+from tgbot import sync_send_message
+from cfg import CHAT_ID
 
 ABS_PATH = Path().resolve()
 
@@ -33,6 +35,11 @@ def check_orders(client):
     if sums < limit:
         print("BLOCKING TRADING")
         cancel_orders(client)
+        sync_send_message(
+            CHAT_ID,
+            f"🔴 Ваша просадка превысила дневной лимит в {limit}. \n\nВозвращайся через 6 часов друг",
+            None
+        )
 
 
 def cancel_orders(client):
